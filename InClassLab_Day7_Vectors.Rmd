@@ -1,6 +1,6 @@
 ---
 title: "In Class Lab"
-author: "Dr. Shoemaker"
+author: "Emanuel Padilla"
 date: "DATA 2401"
 output: html_document
 ---
@@ -15,29 +15,96 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Set 1 
 
 1. Use the colon operator : to create a vector `n` of numbers from 10:49
-2. Use the `length()` function to get the number of elements in `n`
-3. Add 1 to each element in `n` and print the result
-4. Create a vector `m` that contains the numbers 10 to 1 (in that order), in two different ways, neither of which is just typing "10, 9 , 8 ...".  Hint: use one of the helper functions we learned.
-5. Subtract `m` FROM `n`. Note the recycling!
 
+```{r}
+n <- 10:49
+
+```
+
+2. Use the `length()` function to get the number of elements in `n`
+```{r}
+length(n)
+
+```
+
+3. Add 1 to each element in `n` and print the result
+```{r}
+n_result <- paste(n, 1, "")
+
+n_plus_1 <- n + 1
+```
+4. Create a vector `m` that contains the numbers 10 to 1 (in that order), in two different ways, neither of which is just typing "10, 9 , 8 ...".  Hint: use one of the helper functions we learned.
+```{r}
+m <- 10:1
+
+# m <- seq(10, 1)
+```
+5. Subtract `m` FROM `n`. Note the recycling!
+```{r}
+vec <- n - m
+vec
+
+
+```
 ### Set 2 
 
 1. Use the `seq()` function to produce a range of numbers from -5 to 10 in `0.1` increments. Store it in a variable `x_range`
+```{r}
+x_range <- seq(-5, 10, by = 0.1)
+```
 2. Create a vector `sin_wave` by calling the `sin()` function on each element in `x_range`.
+```{r}
+sin_wave <- sin(x_range)
+```
 3. Use the `plot()` function to plot your "wave"!
      + the x vector goes in the first argument, the y vector goes in the second argument
      + You'll need to add the argument `type = "l"` for a line. NOTE: That is a lower case "L", not a 1. 
+```{r}
+plot(x_range, sin_wave, type = "l")
+```
 
 
 ### Set 3 
 
 1. Use `:` to make a vector of the integers from 40 to 50 called `first_nums`
+```{r}
+first_nums <- 40:50
+
+```
 2. Use `seq()` to make a vector of the integers from 51 to 60 called `next_nums`
+```{r}
+next_nums <- seq(51, 60)
+```
 3. Combine them using `c()`
+```{r}
+comb_vec <- c(first_nums, next_nums)
+```
 4. Use indexing to access the 7th number in your combined vector
+```{r}
+comb_vec[7] 
+```
 5. Use indexing to access the 5th to the 8th numbers in your combined vector
+```{r}
+comb_vec[5:7]
+```
 6. Use indexing to create a new vector that contains the first 3 elements and last 3 elements of your combined vector. 
+```{r}
+first_three<- comb_vec[1:3]
+
+length <- length(comb_vec)
+
+last_three <- comb_vec[(length - 2):length]
+
+
+first_n_last <-c(first_three, last_three)
+first_n_last
+```
 7. Bonus/extra: do the above in a way that would work no matter how long the vector is (as long as it's longer than 2 elements)
+```{r}
+n <- length(comb_vec)
+first_n_last <- c(comb_vec[1:3], comb_vec[(n-2):n])
+first_n_last
+```
 
 ## In-Class Activities
 
@@ -50,6 +117,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 x <- c(3.2, NA, 4.1, 5.0, NA, 2.8)
+
+
+#removes the missing values
+x_no_na <- x[!is.na(x)]
+
+#gets the mean from vectors without the na
+mean_x <- mean(x_no_na)
+
+#replaces the na with the mean
+x[is.na(x)] <- mean_x
+x
+
 
 ```
 
@@ -64,7 +143,19 @@ x <- c(3.2, NA, 4.1, 5.0, NA, 2.8)
      * sum(is_a) (since TRUE counts as 1)
 
 ```{r}
+grades <- c(99,  77, 100,  91,  87,  72,  82,  94,  81)
 
+is_a <- grades >= 90
+
+#prints the values that are A's
+grades[is_a]
+
+#prints indices of A's
+which(is_a)
+
+#Both gets us how many A's
+length(grades[is_a])
+sum(is_a)
 ```
 
 1.  Emperical probabilities
@@ -77,6 +168,18 @@ x <- c(3.2, NA, 4.1, 5.0, NA, 2.8)
 
 
 ```{r}
+set.seed(2401)
+
+rolls <-sample(1:6, 200, replace = T)
+
+#counts how many of each face occurred
+table(rolls)
+
+#counts to estimated probabilities
+est_prob <- table(rolls) / length(rolls)
+est_prob
+
+# The most common face in my simulation was 4.
 
 ```
 
@@ -84,24 +187,83 @@ x <- c(3.2, NA, 4.1, 5.0, NA, 2.8)
 1. Write a *function* to simulate rolling a 6-sided die and returns the result.
 
 ```{r}
+dice <- function(rolls){
+  rolling <- sample(1:6, 1, replace = T)
+  rolling
+}
 
+dice(1)
 ```
+
+
 
 
 
 1. Write a function to simulate rolling 2 6-sided dice that returns the sum of the rolls. 
 
 ```{r}
+total_rolls_with_sum <- function(rolls_){
+  
+rolling_ <- sample(1:6, rolls_, replace = T)
 
+sum_rolling <- sum(rolling_)
+
+print(rolling_); print(sum_rolling)
+}
+
+total_rolls_with_sum(2)
+
+    
+  
+ 
 
 ```
 
 
 1. Write a function that takes two people name's as strings, simulates rolling a 6-sided die for each of the names, then returns the name of the person with the higher roll. The function should reroll once on a tie, but if there is a second tie, it should return "draw". 
 
-
 ```{r}
-# Your one-roll function goes here
+
+two_names_two_rolls <- function(name_1, name_2){
+  
+#CREATE A VECTOR FOR THE NAMES
+names <- c(name_1, name_2)
+
+#ROLLS THE 6SIDED DICE 2 TIMES
+rolling <- sample(1:6, 2, replace = T)
+
+#highest roll
+max <- which.max(rolling)
+
+#RETURNS the NAME WITH THE highest ROLL, RESPECTIVE TO THE HIGHEST ROLL INDECE
+name_max <- paste(names[max], rolling[max])
+
+#RETURNS BOTH NAMES WITH THE ROLL RESPECTIVELY
+sum_ <- paste(names, rolling)
+
+#IF THE FIRST ROLL DOES NOT HAVE A TIE, DONE
+  if(rolling[1] != rolling[2]){
+     print(name_max);print(sum_);
+ 
+#ELSE THE FIRST ROLL DOES HAVE A TIE, REDO THE ROLL
+  }else{    
+
+    rolling2 <- sample(1:6, 2, replace = T)
+    max2 <- which.max(rolling2)
+    name_max2 <- paste(names[max2], rolling2[max2])
+
+    #REDO: IS THERES NO TIE NOW, DONE
+    if(rolling2[1] != rolling2[2]){
+      sum_2 <- paste(names, rolling2)
+      print(name_max2); print(sum_2)
+      
+    }else{    #REDO: THERES A TIE AGAIN, DRAW
+      print("DRAW")
+    }
+  }
+}
+
+two_names_two_rolls("Emanuel","Abel")
 
 ```
 
@@ -120,14 +282,55 @@ Process:
      * number of ties (sum(ties))
 
 ```{r}
+roll_15_ <- function(name_1, name_2){
+  
 
+#ROLLS THE 6SIDED DICE 15 TIMES
+p1_wins <- sample(1:6, 15, replace = T)
+p2_wins <- sample(1:6, 15, replace = T)
+
+total_p1 <- sum(p1_wins)
+total_p2 <- sum(p2_wins)
+
+if(total_p1 > total_p2){
+  print(name_1)
+} else if(total_p2 > total_p1){
+  print(name_2)
+}else{
+  print("TIE! NO WINNER!")
+}
+}
+
+roll_15_("Steve","Miguel")
 
 ```
 
 
 3. Modify your function from (2) so that the person in the first argument has a die that is weighted to get higher numbers more often (you may decide the actual percentage change). Run the function ten or so times. Does the second person ever win?
 
+In my case, player 2 did not win the ten times. I mega cheated with player ones dice be weighted to roll 5s and 6s. 
+
 ```{r}
-# Your "cheating" function goes here
+cheating_roll <- function(name_1, name_2){
+  
+
+#ROLLS THE 6SIDED DICE 15 TIMES, p1 IS WEIGHTED
+p1_wins <- sample(5:6, 15, replace = T)
+p2_wins <- sample(1:6, 15, replace = T)
+
+total_p1 <- sum(p1_wins)
+total_p2 <- sum(p2_wins)
+
+if(total_p1 > total_p2){
+  print(name_1)
+} else if(total_p2 > total_p1){
+  print(name_2)
+}else{
+  print("TIE! NO WINNER!")
+}
+}
+
+cheating_roll("Sofia","Margaret")
+
 ```
 
